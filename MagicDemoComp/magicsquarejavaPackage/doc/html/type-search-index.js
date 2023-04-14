@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"magicsquare","l":"magic"},{"p":"magicsquare","l":"magicRemote"},{"p":"magicsquare","l":"MagicsquareMCRFactory"}];updateSearchResults();

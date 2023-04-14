@@ -72,7 +72,7 @@ InterpMat = d0.InterpMat;
 
 
 % MCMC Parameters
-maxcnt = 2000;  % Maximum number of models to save
+maxcnt = 1000;%2000;%1000;%2000;  % Maximum number of models to save
 hier = 1;  % Hierachical?
 datsav=100;  % Save model every this many steps
 
@@ -213,17 +213,18 @@ end
 %% MCMC Iterations
 tic
 
+oper_order = PreorderOpsMS(x,maxcnt*datsav);
 
 for m = 1:maxcnt*datsav
     %%
     % Choose an operation for updating model
-    oper = RandomOperMS(hier);
-
+   % oper = RandomOperMS(hier);
+    oper = RandomOperMS_Preorder(x,oper_order(m));
     
     clear delx
     
     
-    if cnt<100000 
+    if cnt<500
         adaptflag = 0;  % For first NN iterations, do regular MCMC
     else
         adaptflag = 1;  % After, switch to Adaptive
@@ -233,7 +234,7 @@ for m = 1:maxcnt*datsav
     allflag = adaptflag;
     
     % Update model and save proposed update values (delx)
-    [x2,delx] = UpdateMSv2(oper,x,psig,prior,ensemble,xcov,delx_adapt(:,mod(m,datsav)+1),adaptflag,allflag);
+    [x2,delx] = UpdateMSv2_Preorder(oper_order(m),x,psig,prior,ensemble,xcov,delx_adapt(:,mod(m,datsav)+1),adaptflag,allflag);
     
       
     %% Create updated data based on new model
@@ -325,7 +326,9 @@ for m = 1:maxcnt*datsav
             [xmean,xcov] = UpdateMeanCovMS(x,xcov,xmean,ensemble,cnt-covstart,0);
             
             % Draw random numbers based on covariance for next update
-            delx_adapt = mvnrnd(zeros(Nmod,1),2.38^2*xcov/Nmod,datsav)';
+            if adaptflag
+                delx_adapt = mvnrnd(zeros(Nmod,1),2.38^2*xcov/Nmod,datsav)';
+            end
         end
              
         % Display update info to screen 

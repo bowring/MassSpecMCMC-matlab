@@ -29,7 +29,7 @@ for ii = 1:4
     
     subplot(5,2,ii);
     set(gca,'FontSize',fs)
-    [rhist,bins]=hist(ens_rat(ii,burn:cnt),50);
+    [rhist,bins]=hist(exp(ens_rat(ii,burn:cnt)),50);
     dbins = bins(2)-bins(1);
     %bar(bins,rhist/(cnt-burn)/dbins,'Barwidth', 1.05,'EdgeColor','k','facecolor','c')
     aa=bar(bins,rhist,'Barwidth', 1.01,'EdgeColor','none','facecolor','b');hold on;

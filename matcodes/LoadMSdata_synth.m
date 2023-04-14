@@ -51,7 +51,7 @@ Nfar = size(Faraday,2);
 Ndet = Nfar + 1;
 Nsamptot = length(Axial);
 Nblock = max(1,length(unique(Block))-1);
-%Nblock = 1; %length(unique(Block))-1;
+Nblock = 1; %length(unique(Block))-1;
 for mm=1:Nblock
     Ncycle(mm) = length(unique(Cycle(Block==mm)));
 end
@@ -109,7 +109,7 @@ iTknots0 =  [iminCT imaxCT(:,end)];
 
 for m=1:Nblock
     Block_Time{m} = Time(iTknots0(m,1):iTknots0(m,end));
-    InterpMat{m} = interp1(Tknots0(m,:),eye(length(Tknots0(m,:))),Block_Time{m},'spline');
+    InterpMat{m} = interp1(Tknots0(m,:),eye(length(Tknots0(m,:))),Block_Time{m},'linear');
     
     Nknots(m) = length(Tknots0(m,:));
     Ntb(m) = length(Block_Time{m});
